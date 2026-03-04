@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/04 15:33:55 by sjolliet         ###   ########.fr       */
+/*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
+/*   Updated: 2026/03/04 15:32:57 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int argc, char **argv)
+void	show_error_and_exit(char *error_msg)
 {
-	if (argc != 5)
-		show_error_and_exit("program needs 4 arguments");
-	ft_printf("argv[1]: %s, argv[2], %s, argv[3]: %s, argv[4]: %s\n", argv[1], argv[2], argv[3], argv[4]);
-	return (0);
+	ft_putstr_fd("error: ", 2);
+	ft_putstr_fd(error_msg, 2);
+	ft_putchar_fd('\n', 2);
+	exit(EXIT_FAILURE);
 }

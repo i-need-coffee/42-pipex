@@ -6,7 +6,7 @@
 #    By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/03 16:15:52 by sjolliet          #+#    #+#              #
-#    Updated: 2026/03/03 16:19:42 by sjolliet         ###   ########.fr        #
+#    Updated: 2026/03/04 15:33:21 by sjolliet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ CFLAGS			= -Wall -Wextra -Werror -g -Iinclude -Ilibft/include
 
 SRC_DIR			= src
 SRCS			= \
-	$(SRC_DIR)/main.c
+	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/utils.c
 
 OBJ_DIR			= obj
 OBJS			= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
