@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/04 15:33:55 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/04 19:51:51 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 int	main(int argc, char **argv)
 {
+	int	pipefds[2];
+
 	if (argc != 5)
 		show_error_and_exit("program needs 4 arguments");
-	ft_printf("argv[1]: %s, argv[2], %s, argv[3]: %s, argv[4]: %s\n", argv[1], argv[2], argv[3], argv[4]);
+	pipefds[0] = get_read_fd(argv[1]);
+	if (pipefds[0] != -1)
+		close(pipefds[0]);
 	return (0);
 }
