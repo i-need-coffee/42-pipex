@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/06 17:53:58 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/06 18:55:41 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static void	safe_close(int fd);
 
-void	show_error_and_exit(char *error_msg)
+void	cleanup_and_exit(t_pipe_data *p_data, char *error_msg)
 {
+	close_fds(p_data);
 	ft_putstr_fd("error: ", 2);
 	ft_putstr_fd(error_msg, 2);
 	ft_putchar_fd('\n', 2);

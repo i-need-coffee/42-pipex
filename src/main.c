@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/06 18:05:47 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/06 18:59:01 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,21 @@ int	main(int argc, char **argv)
 {
 	t_pipe_data	p_data;
 
+	ft_bzero(&p_data, sizeof(p_data));
 	if (argc != 5)
-		show_error_and_exit("Program needs 4 arguments");
+		cleanup_and_exit(&p_data, "Program needs 4 arguments");
 	if (pipe(p_data.fds) == -1)
-		show_error_and_exit(strerror(errno));
+		cleanup_and_exit(&p_data, strerror(errno));
 	open_files(&p_data, argv);
 	p_data.pid1 = fork();
 	if (p_data.pid1 == -1)
+		cleanup_and_exit(&p_data, strerror(errno));
+	if (p_data.pid1 == 0)
 	{
-		close_fds(&p_data);
-		show_error_and_exit(strerror(errno));
+		if (dup2(p_data.fd_in, 0) == -1)
+			cleanup_and_exit(&p_data, strerror(errno));
+		if (dup2(p_data.fds[1], 1) == -1)
+			cleanup_and_exit(&p_data, strerror(errno));
 	}
 	close_fds(&p_data);
 	return (0);
