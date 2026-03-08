@@ -6,13 +6,13 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/08 14:47:05 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/08 21:54:41 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	t_pipe_data	p_data;
 
@@ -22,9 +22,12 @@ int	main(int argc, char **argv)
 	open_files(&p_data, argv);
 	if (pipe(p_data.fds) == -1)
 		cleanup_and_exit(&p_data, strerror(errno));
-	p_data.pid = fork();
-	if (p_data.pid == -1)
-		cleanup_and_exit(&p_data, strerror(errno));
+	if (p_data.fd_in != -1)
+		run_infile_cmd(&p_data, argv[2], envp);
+	if (p_data.fd_out != -1)
+		run_outfile_cmd(&p_data, argv[3], envp);
 	close_fds(&p_data);
+	waitpid(p_data.pid1, NULL, 0);
+	waitpid(p_data.pid2, NULL, 0);
 	return (0);
 }
