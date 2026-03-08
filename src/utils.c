@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/08 16:08:14 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/08 23:34:53 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ void	open_files(t_pipe_data *p_data, char **argv)
 		perror(argv[1]);
 	p_data->fd_out = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (p_data->fd_out == -1)
+	{
 		perror(argv[4]);
+		close_fds(p_data);
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	close_fds(t_pipe_data *p_data)
