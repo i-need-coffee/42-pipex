@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/08 23:48:14 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/09 00:04:32 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int	main(int argc, char **argv, char **envp)
 	if (p_data.pid2 == 0)
 		second_child(&p_data, argv[3], envp);
 	close_fds(&p_data);
-	waitpid(p_data.pid1, NULL, 0);
-	waitpid(p_data.pid2, NULL, 0);
+	if (waitpid(p_data.pid1, NULL, 0) == -1)
+		cleanup_and_exit(&p_data, strerror(errno));
+	if (waitpid(p_data.pid2, NULL, 0) == -1)
+		cleanup_and_exit(&p_data, strerror(errno));
 	return (0);
 }
