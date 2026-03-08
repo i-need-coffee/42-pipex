@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/06 18:55:41 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/08 14:53:32 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	safe_close(int fd);
+static void	safe_close(int *fd);
 
 void	cleanup_and_exit(t_pipe_data *p_data, char *error_msg)
 {
@@ -35,14 +35,17 @@ void	open_files(t_pipe_data *p_data, char **argv)
 
 void	close_fds(t_pipe_data *p_data)
 {
-	safe_close(p_data->fd_in);
-	safe_close(p_data->fd_out);
-	safe_close(p_data->fds[0]);
-	safe_close(p_data->fds[1]);
+	safe_close(&p_data->fd_in);
+	safe_close(&p_data->fd_out);
+	safe_close(&p_data->fds[0]);
+	safe_close(&p_data->fds[1]);
 }
 
-static void	safe_close(int fd)
+static void	safe_close(int *fd)
 {
-	if (fd && fd != -1)
-		close(fd);
+	if (*fd != -1)
+	{
+		close(*fd);
+		*fd = -1;
+	}
 }

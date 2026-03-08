@@ -1,30 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/08 14:47:05 by sjolliet         ###   ########.fr       */
+/*   Created: 2026/03/08 14:41:31 by sjolliet          #+#    #+#             */
+/*   Updated: 2026/03/08 14:41:40 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int argc, char **argv)
-{
-	t_pipe_data	p_data;
 
-	ft_bzero(&p_data, sizeof(p_data));
-	if (argc != 5)
-		cleanup_and_exit(&p_data, "Program needs 4 arguments");
-	open_files(&p_data, argv);
-	if (pipe(p_data.fds) == -1)
-		cleanup_and_exit(&p_data, strerror(errno));
-	p_data.pid = fork();
-	if (p_data.pid == -1)
-		cleanup_and_exit(&p_data, strerror(errno));
-	close_fds(&p_data);
-	return (0);
-}
