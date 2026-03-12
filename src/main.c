@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/10 16:49:55 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:52:58 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,67 @@ char	**get_paths(char **envp)
 	return (paths);
 }
 
-char	*get_full_path(char **paths, char *cmd)
+void	free_char_tab(char **tab)
 {
-	int		i;
-	char	*full_path;
+	int	i;
 
+	if (!tab)
+		return ;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg)
+{
+	/* 	char *args[] = {"/usr/bin/wc", "-w", NULL};
+	execve("/usr/bin/wc", args, envp); */
+	char	**paths;
+	char	**split_arg;
+	char	*cmd;
+	char	*full_path;
+	int		i;
+	char	*err_msg;
+
+	paths = get_paths(envp);
+	if (!paths)
+		cleanup_and_exit(&p_data, "Problem with retrieving paths");
+	split_arg = ft_split(arg, ' ');
+	if (!split_arg)
+	{
+		free_char_tab(paths);
+		cleanup_and_exit(&p_data, "Memory allocation failed");
+	}
+	cmd = ft_strjoin("/", split_arg[0]);
+	if (!cmd)
+	{
+		free_char_tab(paths);
+		free_char_tab(split_arg);
+		cleanup_and_exit(&p_data, "Memory allocation failed");
+	}
 	i = 0;
 	while (paths[i])
 	{
 		full_path = ft_strjoin(paths[i], cmd);
 		if (!full_path)
-			return (NULL);
-		if (access(full_path, F_OK | X_OK) == 0)
-			return (full_path);
+		{
+			free_char_tab(paths);
+			free_char_tab(split_arg);
+			free(cmd);
+			cleanup_and_exit(&p_data, "Memory allocation failed");
+		}
+		if (access(full_path, F_OK) == 0)
+			break ;
 		free(full_path);
 		i++;
 	}
-	return (NULL);
+	free_char_tab(paths);
+	free_char_tab(split_arg);
+	free(cmd);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -79,12 +123,5 @@ int	main(int argc, char **argv, char **envp)
 		cleanup_and_exit(&p_data, strerror(errno));
 	if (waitpid(p_data.pid2, NULL, 0) == -1)
 		cleanup_and_exit(&p_data, strerror(errno));
-	char **split = ft_split(argv[2], ' ');
-	char *cmd = ft_strjoin("/", split[0]);
-	char **paths = get_paths(envp);
-	char *full_path = get_full_path(paths, cmd);
-	ft_printf("%s\n", full_path);
-/* 	char *args[] = {"/usr/bin/wc", "-w", NULL};
-	execve("/usr/bin/wc", args, envp); */
 	return (0);
 }
