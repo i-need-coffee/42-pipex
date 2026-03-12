@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/10 15:23:30 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/12 18:24:48 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,21 @@ void	close_fds(t_pipe_data *p_data)
 	safe_close(&p_data->fd_out);
 	safe_close(&p_data->fds[0]);
 	safe_close(&p_data->fds[1]);
+}
+
+void	free_char_tab(char **tab)
+{
+	int	i;
+
+	if (!tab)
+		return ;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
 
 static void	safe_close(int *fd)

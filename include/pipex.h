@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:01:32 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/10 15:23:33 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/12 18:28:11 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,21 @@ typedef struct s_pipe_data
 	pid_t	pid2;
 }			t_pipe_data;
 
+typedef struct s_exec_data
+{
+	char	**paths;
+	char	**cmd;
+	char	*full_path;
+	char	*j_cmd;
+	char	*err_msg;
+}			t_exec_data;
+
 void	cleanup_and_exit(t_pipe_data *p_data, char *error_msg);
 void	open_files(t_pipe_data *pipes, char **argv);
 void	close_fds(t_pipe_data *p_data);
 void	first_child(t_pipe_data *p_data, char *cmd, char **envp);
 void	second_child(t_pipe_data *p_data, char *cmd, char **envp);
+void	free_char_tab(char **tab);
+void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg);
 
 #endif

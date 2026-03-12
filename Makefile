@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+         #
+#    By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/03 16:15:52 by sjolliet          #+#    #+#              #
-#    Updated: 2026/03/08 21:44:52 by sjolliet         ###   ########.fr        #
+#    Updated: 2026/03/12 18:27:07 by sjolliet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC_DIR			= src
 SRCS			= \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
+	$(SRC_DIR)/child.c \
 	$(SRC_DIR)/exec.c
 
 OBJ_DIR			= obj
