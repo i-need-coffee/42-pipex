@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:01:32 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 16:07:00 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 18:55:56 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ void	second_child(t_pipe_data *p_data, char *cmd, char **envp);
 void	free_char_tab(char **tab);
 void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg);
 void	free_exec_data(t_exec_data *e_data);
+char	**get_paths(char **envp);
 
 #endif

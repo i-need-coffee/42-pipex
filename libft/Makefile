@@ -6,7 +6,7 @@
 #    By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/30 13:18:48 by sjolliet          #+#    #+#              #
-#    Updated: 2026/03/14 14:32:51 by sjolliet         ###   ########.fr        #
+#    Updated: 2026/03/14 18:56:54 by sjolliet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,8 @@ SRCS	= \
 	$(SRC_DIR)/get_next_line_utils.c \
 	$(SRC_DIR)/ft_atol.c \
 	$(SRC_DIR)/ft_isspace.c \
-	$(SRC_DIR)/ft_free.c
+	$(SRC_DIR)/ft_free.c \
+	$(SRC_DIR)/safe_close.c
 
 OBJ_DIR	= obj
 OBJS	= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

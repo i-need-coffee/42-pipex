@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:42:28 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 14:33:16 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 19:04:18 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ void		free_and_null(char **ptr);
 long		ft_atol(const char *nptr);
 int			ft_isspace(int c);
 void		free_char_tab(char **tab);
+void		safe_close(int *fd);
 
 #endif

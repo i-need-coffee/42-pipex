@@ -6,13 +6,11 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 16:52:27 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 18:56:08 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-static void	safe_close(int *fd);
 
 void	throw_error(char *err_msg, char *err_loc)
 {
@@ -50,11 +48,25 @@ void	free_exec_data(t_exec_data *e_data)
 		free(e_data->j_cmd);
 }
 
-static void	safe_close(int *fd)
+char	**get_paths(char **envp)
 {
-	if (*fd != -1)
+	char	**paths;
+	char	*path_str;
+	int		i;
+
+	i = 0;
+	while (envp && envp[i])
 	{
-		close(*fd);
-		*fd = -1;
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			break ;
+		i++;
 	}
+	if (!envp || !envp[i])
+		return (NULL);
+	path_str = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
+	if (!path_str)
+		return (NULL);
+	paths = ft_split(path_str, ':');
+	free(path_str);
+	return (paths);
 }
