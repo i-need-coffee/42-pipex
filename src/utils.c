@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 16:06:54 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 16:52:27 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static void	safe_close(int *fd);
 
 void	throw_error(char *err_msg, char *err_loc)
 {
-	ft_putstr_fd("error: ", 2);
-	ft_putstr_fd(err_msg, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(err_loc, 2);
-	ft_putstr_fd("\n", 2);
+	write(2, "error: ", 7);
+	write(2, err_msg, ft_strlen(err_msg));
+	write(2, ": ", 2);
+	write(2, err_loc, ft_strlen(err_loc));
+	write(2, "\n", 1);
 }
 
 void	cleanup_and_exit(t_pipe_data *p_data, char *err_msg, char *err_loc)

@@ -14,3 +14,8 @@ _This project has been created as part of the 42 curriculum by sjolliet_
 AI tools were used as learning and productivity aids for :
 
 - Explaining what the new external functions do
+
+
+problems:
+TEST 6
+TEST 7
