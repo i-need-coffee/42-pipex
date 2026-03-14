@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 14:28:17 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:43:17 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 5)
 		cleanup_and_exit(&p_data, "Program needs 4 args", "pipex");
 	open_files(&p_data, argv);
-	//execute_cmd(&p_data, envp, argv[2]);
 	if (pipe(p_data.fds) == -1)
 		cleanup_and_exit(&p_data, strerror(errno), "pipe");
 	p_data.pid1 = fork();

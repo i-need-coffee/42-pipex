@@ -6,12 +6,13 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 14:28:34 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 15:14:26 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+static void	set_full_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp);
 static char	**get_paths(char **envp);
 static void	free_exec_data(t_exec_data *e_data);
 static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data);
@@ -23,21 +24,40 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg)
 	int			err_num;
 
 	ft_bzero(&e_data, sizeof(e_data));
-	e_data.paths = get_paths(envp);
-	if (!e_data.paths)
-		cleanup_and_exit(p_data, "Problem with paths", "envp");
 	e_data.cmd = ft_split(arg, ' ');
 	if (!e_data.cmd)
-	{
-		free_exec_data(&e_data);
 		cleanup_and_exit(p_data, "Memory allocation failed", "ft_split");
-	}
-	set_valid_path(&e_data, p_data);
+	set_full_path(p_data, &e_data, envp);
 	if (execve(e_data.full_path, e_data.cmd, envp) == -1)
 	{
 		err_num = errno;
 		free_exec_data(&e_data);
 		cleanup_and_exit(p_data, strerror(err_num), "execve");
+	}
+}
+
+static void	set_full_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp)
+{
+	if (access(e_data->cmd[0], F_OK) == 0)
+	{
+		if (access(e_data->cmd[0], X_OK) == -1)
+		{
+			throw_error("Command not exectuable", e_data->cmd[0]);
+			free_exec_data(e_data);
+			close_fds(p_data);
+			exit(EXIT_FAILURE);
+		}
+		e_data->full_path = e_data->cmd[0];
+	}
+	else
+	{
+		e_data->paths = get_paths(envp);
+		if (!e_data->paths)
+		{
+			free_exec_data(e_data);
+			cleanup_and_exit(p_data, "Problem with paths", "envp");
+		}
+		set_valid_path(e_data, p_data);
 	}
 }
 
@@ -80,14 +100,14 @@ static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data)
 {
 	if (access(e_data->full_path, F_OK) == -1)
 	{
-		perror(e_data->cmd[0]);
+		throw_error("Command not found", e_data->cmd[0]);
 		free_exec_data(e_data);
 		close_fds(p_data);
 		exit(EXIT_FAILURE);
 	}
 	if (access(e_data->full_path, X_OK) == -1)
 	{
-		perror(e_data->cmd[0]);
+		throw_error("Command not exectuable", e_data->cmd[0]);
 		free_exec_data(e_data);
 		close_fds(p_data);
 		exit(EXIT_FAILURE);
