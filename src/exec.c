@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 15:14:26 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 16:04:36 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,10 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg)
 
 static void	set_full_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp)
 {
-	if (access(e_data->cmd[0], F_OK) == 0)
+	if (e_data->cmd[0] && e_data->cmd[0][0] == '/')
 	{
-		if (access(e_data->cmd[0], X_OK) == -1)
-		{
-			throw_error("Command not exectuable", e_data->cmd[0]);
-			free_exec_data(e_data);
-			close_fds(p_data);
-			exit(EXIT_FAILURE);
-		}
 		e_data->full_path = e_data->cmd[0];
+		check_access_path(e_data, p_data);
 	}
 	else
 	{
@@ -68,13 +62,13 @@ static char	**get_paths(char **envp)
 	int		i;
 
 	i = 0;
-	while (envp[i])
+	while (envp && envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 			break ;
 		i++;
 	}
-	if (!envp[i])
+	if (!envp || !envp[i])
 		return (NULL);
 	path_str = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
 	if (!path_str)
