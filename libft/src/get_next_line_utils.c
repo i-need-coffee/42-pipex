@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 14:52:49 by sjolliet          #+#    #+#             */
-/*   Updated: 2025/11/02 15:43:51 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:32:06 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,4 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 		str[i++] = s2[j++];
 	str[i] = '\0';
 	return (str);
-}
-
-void	free_and_null(char **ptr)
-{
-	if (ptr && *ptr)
-	{
-		free(*ptr);
-		*ptr = NULL;
-	}
 }

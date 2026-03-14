@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:42:28 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/01/06 13:58:46 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:33:16 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ char		*ft_strjoin_gnl(char *s1, char *s2);
 void		free_and_null(char **ptr);
 long		ft_atol(const char *nptr);
 int			ft_isspace(int c);
+void		free_char_tab(char **tab);
 
 #endif
