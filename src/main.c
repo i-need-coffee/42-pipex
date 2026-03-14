@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/12 18:27:52 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 11:13:22 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,5 @@ int	main(int argc, char **argv, char **envp)
 		cleanup_and_exit(&p_data, strerror(errno));
 	if (waitpid(p_data.pid2, NULL, 0) == -1)
 		cleanup_and_exit(&p_data, strerror(errno));
-	execute_cmd(&p_data, envp, argv[2]);
 	return (0);
 }
