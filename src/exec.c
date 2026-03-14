@@ -6,28 +6,27 @@
 /*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 16:04:36 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/14 16:11:56 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	set_full_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp);
+static void	set_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp);
 static char	**get_paths(char **envp);
-static void	free_exec_data(t_exec_data *e_data);
 static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data);
-static void	set_valid_path(t_exec_data *e_data, t_pipe_data *p_data);
+static void	find_valid_path(t_exec_data *e_data, t_pipe_data *p_data);
 
 void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg)
 {
-	t_exec_data e_data;
+	t_exec_data	e_data;
 	int			err_num;
 
 	ft_bzero(&e_data, sizeof(e_data));
 	e_data.cmd = ft_split(arg, ' ');
 	if (!e_data.cmd)
 		cleanup_and_exit(p_data, "Memory allocation failed", "ft_split");
-	set_full_path(p_data, &e_data, envp);
+	set_path(p_data, &e_data, envp);
 	if (execve(e_data.full_path, e_data.cmd, envp) == -1)
 	{
 		err_num = errno;
@@ -36,7 +35,7 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg)
 	}
 }
 
-static void	set_full_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp)
+static void	set_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp)
 {
 	if (e_data->cmd[0] && e_data->cmd[0][0] == '/')
 	{
@@ -51,7 +50,7 @@ static void	set_full_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp)
 			free_exec_data(e_data);
 			cleanup_and_exit(p_data, "Problem with paths", "envp");
 		}
-		set_valid_path(e_data, p_data);
+		find_valid_path(e_data, p_data);
 	}
 }
 
@@ -78,18 +77,6 @@ static char	**get_paths(char **envp)
 	return (paths);
 }
 
-static void	free_exec_data(t_exec_data *e_data)
-{
-	if (e_data->paths)
-		free_char_tab(e_data->paths);
-	if (e_data->cmd)
-		free_char_tab(e_data->cmd);
-	if (e_data->full_path)
-		free(e_data->full_path);
-	if (e_data->j_cmd)
-		free(e_data->j_cmd);
-}
-
 static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data)
 {
 	if (access(e_data->full_path, F_OK) == -1)
@@ -108,7 +95,7 @@ static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data)
 	}
 }
 
-static void	set_valid_path(t_exec_data *e_data, t_pipe_data *p_data)
+static void	find_valid_path(t_exec_data *e_data, t_pipe_data *p_data)
 {
 	int		i;
 
