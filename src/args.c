@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 15:24:05 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/15 16:40:33 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 17:50:06 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ static int	get_arg_len(char *cmd)
 	while (cmd[len])
 	{
 		if (cmd[len] == '\'')
-			in_quotes = !in_quotes;
-		else if (cmd[len] == ' ' && !in_quotes)
+			in_quotes = 1;
+		if (cmd[len] == ' ' && !in_quotes)
 			break ;
 		len++;
 	}

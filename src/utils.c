@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/15 16:40:16 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 18:13:23 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	throw_error(char *err_msg, char *err_loc)
 {
-	write(2, "error: ", 7);
+	write(2, "\033[31mERROR\033[0m ", 16);
 	write(2, err_msg, ft_strlen(err_msg));
 	write(2, ": ", 2);
 	write(2, err_loc, ft_strlen(err_loc));
