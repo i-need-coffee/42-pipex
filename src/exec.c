@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/15 15:40:47 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 17:31:06 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data)
 	}
 	if (access(e_data->full_path, X_OK) == -1)
 	{
-		throw_error("Command not exectuable", e_data->args[0]);
+		throw_error("Permission denied", e_data->args[0]);
 		free_exec_data(e_data);
 		close_fds(p_data);
 		exit(EXIT_FAILURE);
