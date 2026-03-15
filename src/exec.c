@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/15 17:31:06 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 19:45:38 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *cmd)
 	ft_bzero(&e_data, sizeof(e_data));
 	e_data.args = create_args(cmd);
 	if (!e_data.args)
-		cleanup_and_exit(p_data, "Problem with creating args", cmd);
+		cleanup_and_exit(p_data, "Command is invalid and/or memory allocation failed", cmd);
 	set_path(p_data, &e_data, envp);
 	if (execve(e_data.full_path, e_data.args, envp) == -1)
 	{
@@ -81,7 +81,7 @@ static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data)
 {
 	if (access(e_data->full_path, F_OK) == -1)
 	{
-		throw_error("Command not found", e_data->args[0]);
+		throw_error("Command not found or invalid", e_data->args[0]);
 		free_exec_data(e_data);
 		close_fds(p_data);
 		exit(EXIT_FAILURE);

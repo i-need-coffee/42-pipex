@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 15:24:05 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/15 17:50:06 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 19:44:31 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,17 @@ static char	*substr_arg(char *cmd, int len);
 char	**create_args(char *cmd)
 {
 	char	**args;
+	int		i;
 
-	if (!cmd)
+	i = 0;
+	while (cmd[i])
+	{
+		if (ft_isspace(cmd[i]) || cmd[i] == '\'')
+			i++;
+		else
+			break ;
+	}
+	if (!cmd || cmd[i] == '\0')
 		return (NULL);
 	args = (char **)malloc((count_args(cmd) + 1) * sizeof(char *));
 	if (!args)
@@ -77,7 +86,10 @@ static int	fill_args(char **args, char *cmd)
 		len = get_arg_len(cmd + i);
 		args[j] = substr_arg(cmd + i, len);
 		if (!args[j])
-			return (free_args(args, j), 0);
+		{
+			free_args(args, j);
+			return (0);
+		}
 		i += len;
 		j++;
 	}
