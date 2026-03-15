@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:01:32 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 18:55:56 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 16:40:25 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_pipe_data
 typedef struct s_exec_data
 {
 	char	**paths;
-	char	**cmd;
+	char	**args;
 	char	*full_path;
 	char	*j_cmd;
 }			t_exec_data;
@@ -43,8 +43,9 @@ void	close_fds(t_pipe_data *p_data);
 void	first_child(t_pipe_data *p_data, char *cmd, char **envp);
 void	second_child(t_pipe_data *p_data, char *cmd, char **envp);
 void	free_char_tab(char **tab);
-void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg);
+void	execute_cmd(t_pipe_data *p_data, char **envp, char *cmd);
 void	free_exec_data(t_exec_data *e_data);
-char	**get_paths(char **envp);
+char	**create_args(char *cmd);
+void	free_args(char **args, int count);
 
 #endif

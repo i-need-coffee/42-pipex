@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 18:50:41 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 16:39:15 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_memset(&p_data, -1, sizeof(p_data));
 	if (argc != 5)
 		cleanup_and_exit(&p_data, "Program needs 4 args", "pipex");
+	//execute_cmd(&p_data, envp, argv[2]);
 	open_files(&p_data, argv);
 	if (pipe(p_data.fds) == -1)
 		cleanup_and_exit(&p_data, strerror(errno), "pipe");

@@ -3,41 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 19:04:31 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 15:40:47 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	set_args(t_pipe_data *p_data, t_exec_data *e_data, char *arg);
+static char	**get_paths(char **envp);
 static void	set_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp);
 static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data);
 static void	find_valid_path(t_exec_data *e_data, t_pipe_data *p_data);
 
-void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg)
+void	execute_cmd(t_pipe_data *p_data, char **envp, char *cmd)
 {
 	t_exec_data	e_data;
 	int			err_num;
-	int			i;
-	char		*temp;
 
 	ft_bzero(&e_data, sizeof(e_data));
-	set_args(p_data, &e_data, arg);
-	i = 0;
-	while(e_data.cmd[i])
-	{
-		temp = ft_strtrim(e_data.cmd[i], " ");
-		if (!temp)
-			cleanup_and_exit(p_data, "Memory allocation failed", "ft_strtrim");
-		free(e_data.cmd[i]);
-		e_data.cmd[i] = temp;
-		i++;
-	}
+	e_data.args = create_args(cmd);
+	if (!e_data.args)
+		cleanup_and_exit(p_data, "Problem with creating args", cmd);
 	set_path(p_data, &e_data, envp);
-	if (execve(e_data.full_path, e_data.cmd, envp) == -1)
+	if (execve(e_data.full_path, e_data.args, envp) == -1)
 	{
 		err_num = errno;
 		free_exec_data(&e_data);
@@ -45,32 +35,34 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *arg)
 	}
 }
 
-static void	set_args(t_pipe_data *p_data, t_exec_data *e_data, char *arg)
+static char	**get_paths(char **envp)
 {
-	int		count;
+	char	**paths;
+	char	*path_str;
 	int		i;
 
-	count = 0;
 	i = 0;
-	while (arg[i])
+	while (envp && envp[i])
 	{
-		if (arg[i] == '\'')
-			count++;
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			break ;
 		i++;
 	}
-	if (count % 2 == 0)
-		e_data->cmd = ft_split(arg, '\'');
-	else
-		e_data->cmd = ft_split(arg, ' ');
-	if (!e_data->cmd)
-		cleanup_and_exit(p_data, "Memory allocation failed", "ft_split");
+	if (!envp || !envp[i])
+		return (NULL);
+	path_str = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
+	if (!path_str)
+		return (NULL);
+	paths = ft_split(path_str, ':');
+	free(path_str);
+	return (paths);
 }
 
 static void	set_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp)
 {
-	if (e_data->cmd[0] && e_data->cmd[0][0] == '/')
+	if (e_data->args[0] && e_data->args[0][0] == '/')
 	{
-		e_data->full_path = e_data->cmd[0];
+		e_data->full_path = e_data->args[0];
 		check_access_path(e_data, p_data);
 	}
 	else
@@ -89,14 +81,14 @@ static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data)
 {
 	if (access(e_data->full_path, F_OK) == -1)
 	{
-		throw_error("Command not found", e_data->cmd[0]);
+		throw_error("Command not found", e_data->args[0]);
 		free_exec_data(e_data);
 		close_fds(p_data);
 		exit(EXIT_FAILURE);
 	}
 	if (access(e_data->full_path, X_OK) == -1)
 	{
-		throw_error("Command not exectuable", e_data->cmd[0]);
+		throw_error("Command not exectuable", e_data->args[0]);
 		free_exec_data(e_data);
 		close_fds(p_data);
 		exit(EXIT_FAILURE);
@@ -107,7 +99,7 @@ static void	find_valid_path(t_exec_data *e_data, t_pipe_data *p_data)
 {
 	int		i;
 
-	e_data->j_cmd = ft_strjoin("/", e_data->cmd[0]);
+	e_data->j_cmd = ft_strjoin("/", e_data->args[0]);
 	if (!e_data->j_cmd)
 	{
 		free_exec_data(e_data);

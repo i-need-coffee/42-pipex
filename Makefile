@@ -3,24 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+         #
+#    By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/03 16:15:52 by sjolliet          #+#    #+#              #
-#    Updated: 2026/03/14 11:10:20 by sjolliet         ###   ########.fr        #
+#    Updated: 2026/03/15 15:28:23 by sjolliet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= pipex
 
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g -Iinclude -Ilibft/include
+#CFLAGS			= -Wall -Wextra -Werror -g -Iinclude -Ilibft/include
+CFLAGS			= -g -Iinclude -Ilibft/include
 
 SRC_DIR			= src
 SRCS			= \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/pipe.c \
-	$(SRC_DIR)/exec.c
+	$(SRC_DIR)/exec.c \
+	$(SRC_DIR)/args.c
 
 OBJ_DIR			= obj
 OBJS			= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/14 18:56:08 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 16:40:16 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,33 +40,23 @@ void	free_exec_data(t_exec_data *e_data)
 {
 	if (e_data->paths)
 		free_char_tab(e_data->paths);
-	if (e_data->cmd)
-		free_char_tab(e_data->cmd);
+	if (e_data->args)
+		free_char_tab(e_data->args);
 	if (e_data->full_path)
 		free(e_data->full_path);
 	if (e_data->j_cmd)
 		free(e_data->j_cmd);
 }
 
-char	**get_paths(char **envp)
+void	free_args(char **args, int count)
 {
-	char	**paths;
-	char	*path_str;
-	int		i;
+	int	i;
 
 	i = 0;
-	while (envp && envp[i])
+	while (i < count)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
+		free(args[i]);
 		i++;
 	}
-	if (!envp || !envp[i])
-		return (NULL);
-	path_str = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
-	if (!path_str)
-		return (NULL);
-	paths = ft_split(path_str, ':');
-	free(path_str);
-	return (paths);
+	free(args);
 }
