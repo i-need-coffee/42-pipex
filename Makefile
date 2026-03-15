@@ -6,15 +6,14 @@
 #    By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/03 16:15:52 by sjolliet          #+#    #+#              #
-#    Updated: 2026/03/15 15:28:23 by sjolliet         ###   ########.fr        #
+#    Updated: 2026/03/15 20:01:00 by sjolliet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= pipex
 
 CC				= cc
-#CFLAGS			= -Wall -Wextra -Werror -g -Iinclude -Ilibft/include
-CFLAGS			= -g -Iinclude -Ilibft/include
+CFLAGS			= -Wall -Wextra -Werror -g -Iinclude -Ilibft/include
 
 SRC_DIR			= src
 SRCS			= \

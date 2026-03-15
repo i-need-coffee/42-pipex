@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/15 19:54:34 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 20:01:31 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *cmd)
 	e_data.args = create_args(cmd);
 	if (!e_data.args)
 		cleanup_and_exit(p_data, "Command is invalid and/or memory allocation failed", cmd);
-	int i = 0;
-	while (e_data.args[i])
-	{
-		ft_printf("%s[%d]\n", e_data.args[i], i);
-		i++;
-	}
 	set_path(p_data, &e_data, envp);
 	if (execve(e_data.full_path, e_data.args, envp) == -1)
 	{
