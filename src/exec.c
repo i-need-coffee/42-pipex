@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/15 20:01:31 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/15 20:17:57 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,12 @@ static void	set_path(t_pipe_data *p_data, t_exec_data *e_data, char **envp)
 {
 	if (e_data->args[0] && e_data->args[0][0] == '/')
 	{
-		e_data->full_path = e_data->args[0];
+		e_data->full_path = ft_strdup(e_data->args[0]);
+		if (!e_data->full_path)
+		{
+			free_exec_data(e_data);
+			cleanup_and_exit(p_data, "Memory allocation failed", "ft_strdup");
+		}
 		check_access_path(e_data, p_data);
 	}
 	else
