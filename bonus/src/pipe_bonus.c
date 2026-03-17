@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 14:41:31 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:32:38 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:43:19 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,18 @@ void	free_pipe_data(t_pipe_data *p_data)
 {
 	int	i;
 
-	if (!p_data->pipes)
-		return ;
-	i = 0;
-	while (i < p_data->p_count)
+	if (p_data->pipes)
 	{
-		if (p_data->pipes[i])
-			free(p_data->pipes[i]);
-		i++;
+		i = 0;
+		while (i < p_data->p_count)
+		{
+			if (p_data->pipes[i])
+				free(p_data->pipes[i]);
+			i++;
+		}
+		free(p_data->pipes);
+		p_data->pipes = NULL;
 	}
-	free(p_data->pipes);
-	p_data->pipes = NULL;
 	if (p_data->pids)
 	{
 		free(p_data->pids);

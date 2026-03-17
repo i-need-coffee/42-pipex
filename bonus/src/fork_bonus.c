@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:49:18 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:27:17 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:41:11 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ static void	child_process(t_pipe_data *p_data, char *cmd, int i, char **envp)
 			free_pipe_data(p_data);
 			exit(EXIT_FAILURE);
 		}
-		dup_child(p_data, p_data->fd_in, p_data->pipes[i][1]);
+		dup_child(p_data, p_data->fd_in, p_data->pipes[0][1]);
 	}
 	else if (i == (p_data->num_cmds - 1))
-		dup_child(p_data, p_data->pipes[i][0], p_data->fd_out);
+		dup_child(p_data, p_data->pipes[i - 1][0], p_data->fd_out);
 	else
-		dup_child(p_data, p_data->pipes[i][0], p_data->pipes[i + 1][1]);
+		dup_child(p_data, p_data->pipes[i - 1][0], p_data->pipes[i][1]);
 	execute_cmd(p_data, envp, cmd);
 }
 
