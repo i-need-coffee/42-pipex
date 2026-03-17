@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 16:34:37 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 16:50:04 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	main(int argc, char **argv, char **envp)
 	t_pipe_data	p_data;
 
 	ft_memset(&p_data, -1, sizeof(p_data));
-	if (argc != 5)
-		cleanup_and_exit(&p_data, "Program needs 4 args", "pipex");
+	if (argc < 5)
+		cleanup_and_exit(&p_data, "Program needs at least 4 args", "pipex");
 	open_files(&p_data, argv);
 	if (pipe(p_data.fds) == -1)
 		cleanup_and_exit(&p_data, strerror(errno), "pipe");
