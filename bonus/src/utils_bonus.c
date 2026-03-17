@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 16:34:56 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 19:53:27 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,24 @@ void	throw_error(char *err_msg, char *err_loc)
 void	cleanup_and_exit(t_pipe_data *p_data, char *err_msg, char *err_loc)
 {
 	close_fds(p_data);
+	free_pipe_data(p_data);
 	throw_error(err_msg, err_loc);
 	exit(EXIT_FAILURE);
 }
 
 void	close_fds(t_pipe_data *p_data)
 {
+	int	i;
+
+	i = 0;
+	while (i < p_data->p_count)
+	{
+		safe_close(&p_data->pipes[i][0]);
+		safe_close(&p_data->pipes[i][1]);
+		i++;
+	}
 	safe_close(&p_data->fd_in);
 	safe_close(&p_data->fd_out);
-	safe_close(&p_data->fds[0]);
-	safe_close(&p_data->fds[1]);
 }
 
 void	free_exec_data(t_exec_data *e_data)

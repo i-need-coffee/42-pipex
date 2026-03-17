@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 14:41:31 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 17:01:03 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 19:55:40 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,53 @@ void	open_files(t_pipe_data *p_data, char **argv, int argc)
 		cleanup_and_exit(p_data, strerror(errno), argv[argc - 1]);
 }
 
-void	first_child(t_pipe_data *p_data, char *cmd, char **envp)
+void	init_pipe_data(t_pipe_data *p_data)
 {
-	if (p_data->fd_in == -1)
-	{
-		close_fds(p_data);
-		exit(EXIT_FAILURE);
-	}
-	if (dup2(p_data->fd_in, STDIN_FILENO) == -1)
-		cleanup_and_exit(p_data, strerror(errno), "dup2");
-	if (dup2(p_data->fds[1], STDOUT_FILENO) == -1)
-		cleanup_and_exit(p_data, strerror(errno), "dup2");
-	close_fds(p_data);
-	execute_cmd(p_data, envp, cmd);
+	p_data->num_cmds = 0;
+	p_data->pipes = NULL;
+	p_data->p_count = 0;
+	p_data->fd_in = -1;
+	p_data->fd_out = -1;
 }
 
-void	second_child(t_pipe_data *p_data, char *cmd, char **envp)
+void	free_pipe_data(t_pipe_data *p_data)
 {
-	if (dup2(p_data->fds[0], STDIN_FILENO) == -1)
-		cleanup_and_exit(p_data, strerror(errno), "dup2");
-	if (dup2(p_data->fd_out, STDOUT_FILENO) == -1)
-		cleanup_and_exit(p_data, strerror(errno), "dup2");
-	close_fds(p_data);
-	execute_cmd(p_data, envp, cmd);
+	int	i;
+
+	if (!p_data->pipes)
+		return ;
+	i = 0;
+	while (i < p_data->p_count)
+	{
+		if (p_data->pipes[i])
+			free(p_data->pipes[i]);
+		i++;
+	}
+	free(p_data->pipes);
+	p_data->pipes = NULL;
+}
+
+void	create_pipes(t_pipe_data *p_data)
+{
+	int	i;
+
+	p_data->p_count = p_data->num_cmds - 1;
+	p_data->pipes = malloc(p_data->p_count * sizeof(int *));
+	if (!p_data->pipes)
+		cleanup_and_exit(p_data, "pipes creation failed", "malloc");
+	i = 0;
+	while (i < p_data->p_count)
+	{
+		p_data->pipes[i] = malloc(2 * sizeof(int));
+		if (!p_data->pipes[i])
+			cleanup_and_exit(p_data, "pipes creation failed", "malloc");
+		i++;
+	}
+	i = 0;
+	while (i < p_data->p_count)
+	{
+		if (pipe(p_data->pipes[i]) == -1)
+			cleanup_and_exit(p_data, strerror(errno), "pipe");
+		i++;
+	}
 }
