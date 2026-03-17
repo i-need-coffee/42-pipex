@@ -4,6 +4,7 @@ obj/
 
 # ===== Executables =====
 pipex
+pipex_bonus
 
 # ===== Libraries =====
 *.a
