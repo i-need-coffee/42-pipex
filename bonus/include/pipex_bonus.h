@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:01:32 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 19:55:53 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 21:15:51 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_pipe_data
 	int		num_cmds;
 	int		**pipes;
 	int		p_count;
+	pid_t	*pids;
 	int		fd_in;
 	int		fd_out;
 }			t_pipe_data;
@@ -47,5 +48,6 @@ char	**create_args(char *cmd);
 void	free_args(char **args, int count);
 void	create_pipes(t_pipe_data *p_data);
 void	free_pipe_data(t_pipe_data *p_data);
+void	create_children(t_pipe_data *p_data, char **argv, char **envp);
 
 #endif

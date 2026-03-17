@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:16:53 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 19:56:29 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 21:15:32 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,8 @@ int	main(int argc, char **argv, char **envp)
 	open_files(&p_data, argv, argc);
 	p_data.num_cmds = argc - 3;
 	create_pipes(&p_data);
+	create_children(&p_data, argv, envp);
+	close_fds(&p_data);
+	free_pipe_data(&p_data);
 	return (0);
 }
