@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 14:41:31 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:26:26 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:32:38 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,19 @@ void	create_pipes(t_pipe_data *p_data)
 	{
 		if (pipe(p_data->pipes[i]) == -1)
 			cleanup_and_exit(p_data, strerror(errno), "pipe");
+		i++;
+	}
+}
+
+void	wait_children(t_pipe_data *p_data)
+{
+	int	i;
+
+	i = 0;
+	while (i < p_data->num_cmds)
+	{
+		if (waitpid(p_data->pids[i], NULL, 0) == -1)
+			cleanup_and_exit(p_data, strerror(errno), "waitpid");
 		i++;
 	}
 }

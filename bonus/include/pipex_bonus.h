@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:01:32 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:19:28 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:32:11 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	create_pipes(t_pipe_data *p_data);
 void	free_pipe_data(t_pipe_data *p_data);
 void	init_pipe_data(t_pipe_data *p_data);
 void	create_children(t_pipe_data *p_data, char **argv, char **envp);
+void	wait_children(t_pipe_data *p_data);
 
 #endif
