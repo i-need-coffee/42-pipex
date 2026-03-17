@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:09:10 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:27:22 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:55:47 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,18 @@ void	close_fds(t_pipe_data *p_data)
 {
 	int	i;
 
-	i = 0;
-	while (i < p_data->p_count)
-	{
-		safe_close(&p_data->pipes[i][0]);
-		safe_close(&p_data->pipes[i][1]);
-		i++;
-	}
 	safe_close(&p_data->fd_in);
 	safe_close(&p_data->fd_out);
+	if (p_data->pipes)
+	{
+		i = 0;
+		while (i < p_data->p_count)
+		{
+			safe_close(&p_data->pipes[i][0]);
+			safe_close(&p_data->pipes[i][1]);
+			i++;
+		}
+	}
 }
 
 void	free_exec_data(t_exec_data *e_data)
