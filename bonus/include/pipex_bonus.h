@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:01:32 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 16:33:29 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 16:54:22 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_exec_data
 
 void	throw_error(char *err_msg, char *err_loc);
 void	cleanup_and_exit(t_pipe_data *p_data, char *err_msg, char *err_loc);
-void	open_files(t_pipe_data *pipes, char **argv);
+void	open_files(t_pipe_data *p_data, char **argv, int argc);
 void	close_fds(t_pipe_data *p_data);
 void	first_child(t_pipe_data *p_data, char *cmd, char **envp);
 void	second_child(t_pipe_data *p_data, char *cmd, char **envp);
