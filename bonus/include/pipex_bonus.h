@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:01:32 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:32:11 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/18 00:07:58 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_pipe_data
 	pid_t	*pids;
 	int		fd_in;
 	int		fd_out;
+	int		here_doc;
 }			t_pipe_data;
 
 typedef struct s_exec_data
@@ -51,5 +52,6 @@ void	free_pipe_data(t_pipe_data *p_data);
 void	init_pipe_data(t_pipe_data *p_data);
 void	create_children(t_pipe_data *p_data, char **argv, char **envp);
 void	wait_children(t_pipe_data *p_data);
+void	handle_here_doc(t_pipe_data *p_data, char *limiter);
 
 #endif

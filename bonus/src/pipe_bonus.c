@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 14:41:31 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:43:19 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 23:55:06 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 
 void	open_files(t_pipe_data *p_data, char **argv, int argc)
 {
-	p_data->fd_in = open(argv[1], O_RDONLY);
-	if (p_data->fd_in == -1)
-		throw_error(strerror(errno), argv[1]);
-	p_data->fd_out = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (!p_data->here_doc)
+	{
+		p_data->fd_in = open(argv[1], O_RDONLY);
+		if (p_data->fd_in == -1)
+			throw_error(strerror(errno), argv[1]);
+	}
+	if (p_data->here_doc)
+		p_data->fd_out = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		p_data->fd_out = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (p_data->fd_out == -1)
 		cleanup_and_exit(p_data, strerror(errno), argv[argc - 1]);
 }
@@ -30,6 +36,7 @@ void	init_pipe_data(t_pipe_data *p_data)
 	p_data->pids = NULL;
 	p_data->fd_in = -1;
 	p_data->fd_out = -1;
+	p_data->here_doc = 0;
 }
 
 void	free_pipe_data(t_pipe_data *p_data)

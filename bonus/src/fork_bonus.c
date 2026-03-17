@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:49:18 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 22:41:11 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/18 00:07:21 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,12 @@ void	create_children(t_pipe_data *p_data, char **argv, char **envp)
 		if (p_data->pids[i] == -1)
 			cleanup_and_exit(p_data, strerror(errno), "fork");
 		if (p_data->pids[i] == 0)
-			child_process(p_data, argv[i + 2], i, envp);
+		{
+			if (p_data->here_doc)
+				child_process(p_data, argv[i + 3], i, envp);
+			else
+				child_process(p_data, argv[i + 2], i, envp);
+		}
 		i++;
 	}
 }
