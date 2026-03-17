@@ -6,7 +6,7 @@
 #    By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/03 16:15:52 by sjolliet          #+#    #+#              #
-#    Updated: 2026/03/17 16:42:12 by sjolliet         ###   ########.fr        #
+#    Updated: 2026/03/17 21:50:09 by sjolliet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ BONUS_SRCS		= \
 	$(BONUS_SRC_DIR)/utils_bonus.c \
 	$(BONUS_SRC_DIR)/pipe_bonus.c \
 	$(BONUS_SRC_DIR)/exec_bonus.c \
-	$(BONUS_SRC_DIR)/args_bonus.c
+	$(BONUS_SRC_DIR)/args_bonus.c \
+	$(BONUS_SRC_DIR)/fork_bonus.c
 
 OBJS			= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 BONUS_OBJS		= $(BONUS_SRCS:$(BONUS_SRC_DIR)/%.c=$(BONUS_OBJ_DIR)/%.o)

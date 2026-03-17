@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 14:41:31 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 21:43:24 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:26:26 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	init_pipe_data(t_pipe_data *p_data)
 	p_data->num_cmds = 0;
 	p_data->pipes = NULL;
 	p_data->p_count = 0;
+	p_data->pids = NULL;
 	p_data->fd_in = -1;
 	p_data->fd_out = -1;
 }
@@ -46,6 +47,11 @@ void	free_pipe_data(t_pipe_data *p_data)
 	}
 	free(p_data->pipes);
 	p_data->pipes = NULL;
+	if (p_data->pids)
+	{
+		free(p_data->pids);
+		p_data->pids = NULL;
+	}
 }
 
 void	create_pipes(t_pipe_data *p_data)
@@ -69,35 +75,6 @@ void	create_pipes(t_pipe_data *p_data)
 	{
 		if (pipe(p_data->pipes[i]) == -1)
 			cleanup_and_exit(p_data, strerror(errno), "pipe");
-		i++;
-	}
-}
-
-void	create_children(t_pipe_data *p_data, char **argv, char **envp)
-{
-	int	i;
-
-	p_data->pids = malloc(p_data->num_cmds * sizeof(pid_t));
-	if (!p_data->pids)
-		cleanup_and_exit(&p_data, "pids array creation failed", "malloc");
-	i = 0;
-	while (i < p_data->num_cmds)
-	{
-		p_data->pids[i] = fork();
-		if (p_data->pids[i] == -1)
-			cleanup_and_exit(&p_data, strerror(errno), "fork");
-		if (p_data->pids[i] == 0)
-		{
-			if (i == 0)
-				child_process(p_data->fd_in, p_data->pipes[i][1],
-					p_data, argv[i + 2], envp);
-			else if (i == (p_data->num_cmds - 1))
-				child_process(p_data->pipes[i][0], p_data->fd_out,
-					p_data, argv[i + 2], envp);
-			else
-				child_process(p_data->pipes[i][0], p_data->pipes[i + 1][1],
-					p_data, argv[i + 2], envp);
-		}
 		i++;
 	}
 }
