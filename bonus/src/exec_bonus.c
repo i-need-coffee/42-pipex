@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 16:34:27 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/19 18:19:14 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *cmd)
 	t_exec_data	e_data;
 	int			err_num;
 
+	if (!cmd[0])
+		cleanup_and_exit(p_data, "permission denied", cmd);
 	ft_bzero(&e_data, sizeof(e_data));
 	e_data.args = create_args(cmd);
 	if (!e_data.args)
-		cleanup_and_exit(p_data, "Command is invalid or malloc failed", cmd);
+		cleanup_and_exit(p_data, "Command not found or memory allocation failed", cmd);
 	set_path(p_data, &e_data, envp);
 	if (execve(e_data.full_path, e_data.args, envp) == -1)
 	{
