@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 15:24:05 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/19 18:53:55 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/21 11:51:06 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,9 @@ static char	*substr_arg(char *cmd, int len)
 	int		j;
 
 	arg = malloc((len + 1) * sizeof(char));
-	if (!arg)
-		return (NULL);
 	i = 0;
 	j = 0;
-	while (i < len)
+	while (arg && i < len)
 	{
 		if (cmd[i] == '\'' && (i == 0 || cmd[i - 1] != '\\'))
 		{
@@ -141,6 +139,7 @@ static char	*substr_arg(char *cmd, int len)
 		}
 		arg[j++] = cmd[i++];
 	}
-	arg[j] = '\0';
+	if (arg)
+		arg[j] = '\0';
 	return (arg);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjolliet <sjolliet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:26:47 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/19 18:15:10 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/21 12:17:47 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	execute_cmd(t_pipe_data *p_data, char **envp, char *cmd)
 	int			err_num;
 
 	if (!cmd[0])
-		cleanup_and_exit(p_data, "permission denied", cmd);
+		cleanup_and_exit(p_data, "Permission denied", cmd);
 	ft_bzero(&e_data, sizeof(e_data));
 	e_data.args = create_args(cmd);
 	if (!e_data.args)
-		cleanup_and_exit(p_data, "Command not found or memory allocation failed", cmd);
+		cleanup_and_exit(p_data, "Command not found", cmd);
 	set_path(p_data, &e_data, envp);
 	if (execve(e_data.full_path, e_data.args, envp) == -1)
 	{
@@ -88,7 +88,7 @@ static void	check_access_path(t_exec_data *e_data, t_pipe_data *p_data)
 {
 	if (access(e_data->full_path, F_OK) == -1)
 	{
-		throw_error("Command not found or invalid", e_data->args[0]);
+		throw_error("Command not found", e_data->args[0]);
 		free_exec_data(e_data);
 		close_fds(p_data);
 		exit(EXIT_FAILURE);
