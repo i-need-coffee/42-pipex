@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 15:24:05 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/21 11:51:06 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/21 12:41:32 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,13 @@ static char	*substr_arg(char *cmd, int len)
 		if (cmd[i] == '\'' && (i == 0 || cmd[i - 1] != '\\'))
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		if (cmd[i] == '\\' && cmd[i + 1] == '\'')
 		{
 			arg[j++] = cmd[i + 1];
 			i += 2;
-			continue;
+			continue ;
 		}
 		arg[j++] = cmd[i++];
 	}
