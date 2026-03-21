@@ -6,7 +6,7 @@
 /*   By: sjolliet <sjolliet@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 15:24:05 by sjolliet          #+#    #+#             */
-/*   Updated: 2026/03/17 16:34:18 by sjolliet         ###   ########.fr       */
+/*   Updated: 2026/03/21 12:39:04 by sjolliet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static int	get_arg_len(char *cmd)
 	in_quotes = 0;
 	while (cmd[len])
 	{
-		if (cmd[len] == '\'')
+		if (cmd[len] == '\'' && (len == 0 || cmd[len - 1] != '\\'))
 			in_quotes = !in_quotes;
 		else if (cmd[len] == ' ' && !in_quotes)
 			break ;
@@ -122,19 +122,24 @@ static char	*substr_arg(char *cmd, int len)
 	int		j;
 
 	arg = malloc((len + 1) * sizeof(char));
-	if (!arg)
-		return (NULL);
 	i = 0;
 	j = 0;
-	while (i < len)
+	while (arg && i < len)
 	{
-		if (cmd[i] != '\'')
+		if (cmd[i] == '\'' && (i == 0 || cmd[i - 1] != '\\'))
 		{
-			arg[j] = cmd[i];
-			j++;
+			i++;
+			continue;
 		}
-		i++;
+		if (cmd[i] == '\\' && cmd[i + 1] == '\'')
+		{
+			arg[j++] = cmd[i + 1];
+			i += 2;
+			continue;
+		}
+		arg[j++] = cmd[i++];
 	}
-	arg[j] = '\0';
+	if (arg)
+		arg[j] = '\0';
 	return (arg);
 }
