@@ -105,6 +105,28 @@ Equivalent shell command:
     ./pipex here_doc EOF "cat" "wc -l" outfile
     ```
 
+**Handling quoted arguments**
+
+Arguments enclosed in single quotes are treated as a single argument, even if they contain spaces.
+
+Escaped single quotes inside quoted arguments are also supported.
+
+For example:
+
+```bash
+./pipex infile "grep 'error: invalid user\'s input'" "wc -l" outfile
+```
+
+Will be interpreted internally as:
+
+```bash
+< infile grep "error: invalid user's input" | wc -l > outfile
+```
+
+Note that only single quotes are supported (double quotes are not handled).
+
+The behavior may differ slightly from a real shell in edge cases.
+
 ## Resources
 
 - https://medium.com/@abkabex/pipex-42-009811947a59
